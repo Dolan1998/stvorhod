@@ -1,28 +1,19 @@
 package JSimPack2.RandomGenerators;
 
 public class ExponentialRandom extends AbstractRandom {
+    private double offset;
     private double mean;
 
-    public ExponentialRandom() {
-    }
-    
-    public ExponentialRandom(double mean) {
+    public ExponentialRandom(double offset, double mean) {
+        this.offset = offset;
         this.mean = mean;
     }
 
     public double nextDouble() {
-        return - mean * Math.log(generator.nextDouble());
-    }
-    
-    public double nextDouble(double mean) {
-        return - mean * Math.log(generator.nextDouble());
-    }
-    
-    public void setParameters(double mean) {
-	this.mean = mean;
+        return - mean * Math.log(generator.nextDouble()) + offset;
     }
 
     public int nextInt() {
-        return Math.round((float) (- mean * Math.log(generator.nextDouble())));
+        return (int) Math.round((- mean * Math.log(generator.nextDouble()) + offset));
     }
 }
