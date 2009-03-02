@@ -1,7 +1,6 @@
 /*
  * Ds_s1View.java
  */
-
 package ds_s1;
 
 import org.jdesktop.application.Action;
@@ -11,10 +10,16 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
 /**
  * The application's main frame.
@@ -30,6 +35,7 @@ public class Ds_s1View extends FrameView {
         ResourceMap resourceMap = getResourceMap();
         int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
         messageTimer = new Timer(messageTimeout, new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
                 statusMessageLabel.setText("");
             }
@@ -40,6 +46,7 @@ public class Ds_s1View extends FrameView {
             busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
         }
         busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
                 busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
                 statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
@@ -52,6 +59,7 @@ public class Ds_s1View extends FrameView {
         // connecting action tasks to status bar via TaskMonitor
         TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
         taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 String propertyName = evt.getPropertyName();
                 if ("started".equals(propertyName)) {
@@ -68,17 +76,19 @@ public class Ds_s1View extends FrameView {
                     progressBar.setVisible(false);
                     progressBar.setValue(0);
                 } else if ("message".equals(propertyName)) {
-                    String text = (String)(evt.getNewValue());
+                    String text = (String) (evt.getNewValue());
                     statusMessageLabel.setText((text == null) ? "" : text);
                     messageTimer.restart();
                 } else if ("progress".equals(propertyName)) {
-                    int value = (Integer)(evt.getNewValue());
+                    int value = (Integer) (evt.getNewValue());
                     progressBar.setVisible(true);
                     progressBar.setIndeterminate(false);
                     progressBar.setValue(value);
                 }
             }
         });
+
+        simulation = new Simulation(this);
     }
 
     @Action
@@ -101,6 +111,17 @@ public class Ds_s1View extends FrameView {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
+        btnStart = new javax.swing.JButton();
+        pnlHistogram = new javax.swing.JPanel();
+        lblReplikacia = new javax.swing.JLabel();
+        btnStop = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tarNotes = new javax.swing.JTextArea();
+        chbSuperspeed = new javax.swing.JCheckBox();
+        jPanel1 = new javax.swing.JPanel();
+        txtReplicationCount = new javax.swing.JTextField();
+        btnReplicationCount = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -112,22 +133,167 @@ public class Ds_s1View extends FrameView {
         statusAnimationLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
 
+        mainPanel.setMaximumSize(new java.awt.Dimension(600, 300));
+        mainPanel.setMinimumSize(new java.awt.Dimension(600, 300));
         mainPanel.setName("mainPanel"); // NOI18N
+        mainPanel.setPreferredSize(new java.awt.Dimension(600, 100));
+
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ds_s1.Ds_s1App.class).getContext().getResourceMap(Ds_s1View.class);
+        btnStart.setText(resourceMap.getString("btnStart.text")); // NOI18N
+        btnStart.setName("btnStart"); // NOI18N
+        btnStart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStartActionPerformed(evt);
+            }
+        });
+
+        pnlHistogram.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        pnlHistogram.setName("pnlHistogram"); // NOI18N
+        pnlHistogram.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                pnlHistogramComponentResized(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlHistogramLayout = new javax.swing.GroupLayout(pnlHistogram);
+        pnlHistogram.setLayout(pnlHistogramLayout);
+        pnlHistogramLayout.setHorizontalGroup(
+            pnlHistogramLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 346, Short.MAX_VALUE)
+        );
+        pnlHistogramLayout.setVerticalGroup(
+            pnlHistogramLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 315, Short.MAX_VALUE)
+        );
+
+        lblReplikacia.setText(resourceMap.getString("lblReplikacia.text")); // NOI18N
+        lblReplikacia.setName("lblReplikacia"); // NOI18N
+
+        btnStop.setText(resourceMap.getString("btnStop.text")); // NOI18N
+        btnStop.setEnabled(false);
+        btnStop.setName("btnStop"); // NOI18N
+        btnStop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStopActionPerformed(evt);
+            }
+        });
+
+        btnReset.setText(resourceMap.getString("btnReset.text")); // NOI18N
+        btnReset.setEnabled(false);
+        btnReset.setName("btnReset"); // NOI18N
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
+
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        tarNotes.setColumns(20);
+        tarNotes.setRows(5);
+        tarNotes.setEnabled(false);
+        tarNotes.setName("tarNotes"); // NOI18N
+        jScrollPane1.setViewportView(tarNotes);
+
+        chbSuperspeed.setText(resourceMap.getString("chbSuperspeed.text")); // NOI18N
+        chbSuperspeed.setName("chbSuperspeed"); // NOI18N
+        chbSuperspeed.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chbSuperspeedStateChanged(evt);
+            }
+        });
+        chbSuperspeed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbSuperspeedActionPerformed(evt);
+            }
+        });
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel1.border.title"))); // NOI18N
+        jPanel1.setName("jPanel1"); // NOI18N
+
+        txtReplicationCount.setText(resourceMap.getString("txtReplicationCount.text")); // NOI18N
+        txtReplicationCount.setName("txtReplicationCount"); // NOI18N
+
+        btnReplicationCount.setText(resourceMap.getString("btnReplicationCount.text")); // NOI18N
+        btnReplicationCount.setName("btnReplicationCount"); // NOI18N
+        btnReplicationCount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReplicationCountActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtReplicationCount, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReplicationCount, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(txtReplicationCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnReplicationCount))
+        );
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnReset, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnStop, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
+                        .addGap(339, 339, 339))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chbSuperspeed)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(lblReplikacia, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pnlHistogram, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGap(6, 6, 6)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
+
+        mainPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnReset, btnStart, btnStop});
+
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 252, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlHistogram, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
+                        .addComponent(btnStart)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnStop)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnReset)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblReplikacia)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chbSuperspeed)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         menuBar.setName("menuBar"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ds_s1.Ds_s1App.class).getContext().getResourceMap(Ds_s1View.class);
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
@@ -162,11 +328,11 @@ public class Ds_s1View extends FrameView {
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 647, Short.MAX_VALUE)
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 477, Short.MAX_VALUE)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusAnimationLabel)
@@ -189,20 +355,73 @@ public class Ds_s1View extends FrameView {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
+        new Thread(simulation, "simulation").start();
+        btnStart.setEnabled(false);
+        btnStop.setEnabled(true);
+        btnReset.setEnabled(false);
+}//GEN-LAST:event_btnStartActionPerformed
+
+    private void pnlHistogramComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlHistogramComponentResized
+        if (pnlHistogram.getComponentCount() > 0) {
+            pnlHistogram.getComponent(0).setSize(pnlHistogram.getSize());
+        }
+    }//GEN-LAST:event_pnlHistogramComponentResized
+
+    private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
+        simulation.interrupt();
+        btnStart.setEnabled(true);
+        btnStop.setEnabled(false);
+        btnReset.setEnabled(true);
+    }//GEN-LAST:event_btnStopActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        simulation.init();
+        btnStart.setEnabled(true);
+        btnStop.setEnabled(false);
+        btnReset.setEnabled(false);
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void chbSuperspeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbSuperspeedActionPerformed
+    }//GEN-LAST:event_chbSuperspeedActionPerformed
+
+        private void chbSuperspeedStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chbSuperspeedStateChanged
+            simulation.setSuperspeed(chbSuperspeed.isSelected());
+        }//GEN-LAST:event_chbSuperspeedStateChanged
+
+        private void btnReplicationCountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReplicationCountActionPerformed
+            try {
+                int count = Integer.parseInt(txtReplicationCount.getText());
+                simulation.setCountCycles(count);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Wrong input format for integer.");
+            }
+        }//GEN-LAST:event_btnReplicationCountActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnReplicationCount;
+    public javax.swing.JButton btnReset;
+    public javax.swing.JButton btnStart;
+    public javax.swing.JButton btnStop;
+    public javax.swing.JCheckBox chbSuperspeed;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JLabel lblReplikacia;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
+    public javax.swing.JPanel pnlHistogram;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
+    public javax.swing.JTextArea tarNotes;
+    private javax.swing.JTextField txtReplicationCount;
     // End of variables declaration//GEN-END:variables
-
     private final Timer messageTimer;
     private final Timer busyIconTimer;
     private final Icon idleIcon;
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
-
     private JDialog aboutBox;
+    Simulation simulation;
 }
