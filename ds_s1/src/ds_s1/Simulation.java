@@ -10,7 +10,6 @@ import JSimPack2.RandomGenerators.EmpiricalRandom;
 import JSimPack2.RandomGenerators.UniformRandom;
 import java.awt.Color;
 import java.util.ArrayList;
-import javax.swing.JPanel;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -26,7 +25,8 @@ import org.jfree.ui.RectangleInsets;
  * @author Klesako
  */
 public class Simulation extends Thread {
-    private boolean  superspeed = false;
+    private boolean showHistogram = true;
+    private boolean showNotes = true;
 
     private Ds_s1View view;
     private SimulationStatus status = SimulationStatus.interrupted;
@@ -37,6 +37,7 @@ public class Simulation extends Thread {
     private int replication = 0;
     private double avgSum; // sum to average
     private double sumOfCompleted45;
+    private int histogram[] = new int[100];
 
     public ArrayList<Integer> getActivities() {
         return activities;
@@ -46,9 +47,6 @@ public class Simulation extends Thread {
         this.countCycles = countCycles;
     }
 
-    public void setSuperspeed(boolean superspeed) {
-        this.superspeed = superspeed;
-    }
 
     public Simulation(Ds_s1View view) {
         this.view = view;
@@ -67,7 +65,7 @@ public class Simulation extends Thread {
 
         int[] probabilities8 = {3, 5, 2};
         int[] minValues8 = {8, 9, 12};
-        int[] maxValues8 = {8, 9, 12};
+        int[] maxValues8 = {8, 11, 12};
 
 
         generators.set(1, new UniformRandom(5, 15));
@@ -79,7 +77,6 @@ public class Simulation extends Thread {
         generators.set(7, new UniformRandom(3, 3));
         generators.set(8, new EmpiricalRandom(probabilities8, minValues8, maxValues8));
         generators.set(9, new UniformRandom(14, 16));
-
         init();
     }
 
@@ -103,7 +100,7 @@ public class Simulation extends Thread {
         // create and return the chart panel...
         JFreeChart chart = new JFreeChart("Histogram of weeks", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
         ChartUtilities.applyCurrentTheme(chart);
-        ChartPanel chartPanel = new ChartPanel(chart, false);
+        ChartPanel chartPanel = new ChartPanel(chart, true, true, true, true, true);
 
         view.pnlHistogram.removeAll();
         view.pnlHistogram.add(chartPanel);
@@ -113,6 +110,10 @@ public class Simulation extends Thread {
         view.lblReplikacia.setText(String.valueOf(replication) + "/" + String.valueOf(countCycles));
         avgSum = 0;
         sumOfCompleted45 = 0;
+
+        for (int i = 0; i < 100; i++) {
+            histogram[i] = 0;
+        }
     }
 
     private void generateActivities() {
@@ -134,7 +135,6 @@ public class Simulation extends Thread {
         }
         cas += pom;
         cas += activities.get(9);
-        //histogram[cas]++;
         return cas;
     }
 
@@ -143,12 +143,16 @@ public class Simulation extends Thread {
         status = SimulationStatus.running;
         double cas;
         while(status == SimulationStatus.running && replication < countCycles){
-            //view.tarNotes.setText(String.valueOf(replication) + "\n" +  view.tarNotes.getText());
             cas = simulate();
             avgSum += cas;
             sumOfCompleted45 += cas <= 45 ? 1 : 0;
-            if(!superspeed){
-                view.lblReplikacia.setText(String.valueOf(replication + 1) + "/" + String.valueOf(countCycles));
+            histogram[(int)cas]++;
+
+            view.lblReplikacia.setText(String.valueOf(replication + 1) + "/" + String.valueOf(countCycles));
+            if(showNotes){
+                view.tarNotes.setText("Repl:\t" + String.valueOf(replication) + "\t" + String.valueOf(cas) + "\n" +  view.tarNotes.getText());
+            }
+            if(showHistogram){
                 if (seriesCollection.getSeries(0).indexOf(cas) < 0) {
                     seriesCollection.getSeries(0).add(cas, 1);
                 } else {
@@ -159,12 +163,27 @@ public class Simulation extends Thread {
         }
         // vypisanie vysledkov
         if(replication >= countCycles){
-            view.tarNotes.setText("Finished " + String.valueOf(replication) + " replications." + "\n" +  view.tarNotes.getText());
+            view.tarNotes.setText("Finished " + String.valueOf(replication) + " replications." + "\n\n" +  view.tarNotes.getText());
             view.tarNotes.setText("Average is: " + String.valueOf((double)(avgSum / countCycles)) + "\n" +  view.tarNotes.getText());
-            view.tarNotes.setText("45 weeks: " + String.valueOf((double)(100 * sumOfCompleted45 / countCycles)) + "%\n" +  view.tarNotes.getText());
             view.btnStart.setEnabled(false);
             view.btnStop.setEnabled(false);
             view.btnReset.setEnabled(true);
+            int sum = 0;
+            int min = -1;
+            int max = -1;
+            for (int i = 0; i < histogram.length; i++) {
+                int j = histogram[i];
+                if(histogram[i] > 0 && min == -1){
+                    min = i;
+                }
+                if(sum < countCycles * 0.9){
+                    sum += histogram[i];
+                    max = i;
+                }
+            }
+            view.tarNotes.setText("90%: <" + String.valueOf(min) + ", " + String.valueOf(max) + ">\n" +  view.tarNotes.getText());
+            view.tarNotes.setText("45 weeks: " + String.valueOf((double)(100 * sumOfCompleted45 / countCycles)) + "%\n" +  view.tarNotes.getText());
+
         }
     }
 
@@ -172,4 +191,14 @@ public class Simulation extends Thread {
     public void interrupt() {
         status = SimulationStatus.interrupting;
     }
+
+    public void setShowHistogram(boolean showHistogram) {
+        this.showHistogram = showHistogram;
+    }
+
+    public void setShowNotes(boolean showNotes) {
+        this.showNotes = showNotes;
+    }
+
+    
 }
