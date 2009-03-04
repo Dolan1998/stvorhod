@@ -21,23 +21,23 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="jPanel1" alignment="0" max="32767" attributes="1"/>
                       <Component id="chbNotes" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnReset" alignment="0" pref="101" max="32767" attributes="1"/>
                       <Component id="chbHistogram" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="lblReplikacia" alignment="0" min="-2" max="-2" attributes="1"/>
-                      <Component id="btnStart" alignment="0" pref="101" max="32767" attributes="1"/>
-                      <Component id="btnStop" alignment="0" pref="101" max="32767" attributes="1"/>
+                      <Component id="btnReset" linkSize="1" alignment="0" pref="101" max="32767" attributes="1"/>
+                      <Component id="btnStop" linkSize="1" alignment="0" pref="101" max="32767" attributes="1"/>
+                      <Component id="btnStart" linkSize="1" alignment="0" min="-2" pref="122" max="-2" attributes="1"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="pnlHistogram" pref="346" max="32767" attributes="0"/>
+                  <Component id="pnlHistogram" pref="325" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane1" min="-2" pref="229" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -46,7 +46,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="pnlHistogram" alignment="1" pref="319" max="32767" attributes="2"/>
+                      <Component id="pnlHistogram" alignment="1" pref="315" max="32767" attributes="2"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="btnStart" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -65,7 +65,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" pref="299" max="32767" attributes="2"/>
+                          <Component id="jScrollPane1" pref="292" max="32767" attributes="2"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -76,6 +76,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnStart">
           <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="btnReset.font"/>
             <Property name="text" type="java.lang.String" resourceKey="btnStart.text"/>
             <Property name="name" type="java.lang.String" value="btnStart" noResource="true"/>
           </Properties>
@@ -103,6 +104,7 @@
         </Container>
         <Component class="javax.swing.JLabel" name="lblReplikacia">
           <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="lblReplikacia.font"/>
             <Property name="text" type="java.lang.String" resourceKey="lblReplikacia.text"/>
             <Property name="name" type="java.lang.String" value="lblReplikacia" noResource="true"/>
           </Properties>
@@ -112,6 +114,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnStop">
           <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="btnReset.font"/>
             <Property name="text" type="java.lang.String" resourceKey="btnStop.text"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="name" type="java.lang.String" value="btnStop" noResource="true"/>
@@ -125,6 +128,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnReset">
           <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="btnReset.font"/>
             <Property name="text" type="java.lang.String" resourceKey="btnReset.text"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="name" type="java.lang.String" value="btnReset" noResource="true"/>
@@ -150,7 +154,7 @@
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="tabSize" type="int" value="4"/>
+                <Property name="tabSize" type="int" value="6"/>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="tarNotes" noResource="true"/>
               </Properties>
@@ -162,6 +166,7 @@
         </Container>
         <Component class="javax.swing.JCheckBox" name="chbHistogram">
           <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="lblReplikacia.font"/>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" resourceKey="chbHistogram.text"/>
             <Property name="name" type="java.lang.String" value="chbHistogram" noResource="true"/>
@@ -179,6 +184,7 @@
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                 <TitledBorder title="Repl. count">
                   <Property name="titleX" resourceKey="jPanel1.border.title"/>
+                  <Property name="font" resourceKey="jPanel1.border.titleFont"/>
                 </TitledBorder>
               </Border>
             </Property>
@@ -188,10 +194,10 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtReplicationCount" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
-                          <Component id="btnReplicationCountSet" alignment="1" pref="75" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="btnReplicationCountSet" alignment="0" pref="96" max="32767" attributes="0"/>
+                          <Component id="txtReplicationCount" alignment="1" pref="96" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -203,6 +209,7 @@
                       <Component id="txtReplicationCount" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnReplicationCountSet" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -216,6 +223,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnReplicationCountSet">
               <Properties>
+                <Property name="font" type="java.awt.Font" resourceKey="btnReset.font"/>
                 <Property name="text" type="java.lang.String" resourceKey="btnReplicationCountSet.text"/>
                 <Property name="name" type="java.lang.String" value="btnReplicationCountSet" noResource="true"/>
               </Properties>
@@ -227,6 +235,7 @@
         </Container>
         <Component class="javax.swing.JCheckBox" name="chbNotes">
           <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="lblReplikacia.font"/>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" resourceKey="chbNotes.text"/>
             <Property name="name" type="java.lang.String" value="chbNotes" noResource="true"/>
@@ -240,6 +249,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="lblReplikacia.font"/>
             <Property name="text" type="java.lang.String" resourceKey="jLabel1.text"/>
             <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
           </Properties>
@@ -258,6 +268,7 @@
         <Menu class="javax.swing.JMenu" name="fileMenu">
           <Properties>
             <Property name="text" type="java.lang.String" resourceKey="fileMenu.text"/>
+            <Property name="font" type="java.awt.Font" resourceKey="fileMenu.font"/>
             <Property name="name" type="java.lang.String" value="fileMenu" noResource="true"/>
           </Properties>
           <AuxValues>
@@ -270,6 +281,7 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="org.jdesktop.application.Application" id="quit" methodName="quit"/>
                 </Property>
+                <Property name="font" type="java.awt.Font" resourceKey="aboutMenuItem.font"/>
                 <Property name="name" type="java.lang.String" value="exitMenuItem" noResource="true"/>
               </Properties>
               <AuxValues>
@@ -282,6 +294,7 @@
         <Menu class="javax.swing.JMenu" name="helpMenu">
           <Properties>
             <Property name="text" type="java.lang.String" resourceKey="helpMenu.text"/>
+            <Property name="font" type="java.awt.Font" resourceKey="fileMenu.font"/>
             <Property name="name" type="java.lang.String" value="helpMenu" noResource="true"/>
           </Properties>
           <AuxValues>
@@ -294,6 +307,7 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="ds_s1.Ds_s1View" id="showAboutBox" methodName="showAboutBox"/>
                 </Property>
+                <Property name="font" type="java.awt.Font" resourceKey="aboutMenuItem.font"/>
                 <Property name="name" type="java.lang.String" value="aboutMenuItem" noResource="true"/>
               </Properties>
               <AuxValues>
