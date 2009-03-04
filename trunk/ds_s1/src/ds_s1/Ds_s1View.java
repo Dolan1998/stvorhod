@@ -71,6 +71,7 @@ public class Ds_s1View extends FrameView {
         mainPanel.setPreferredSize(new java.awt.Dimension(600, 100));
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ds_s1.Ds_s1App.class).getContext().getResourceMap(Ds_s1View.class);
+        btnStart.setFont(resourceMap.getFont("btnReset.font")); // NOI18N
         btnStart.setText(resourceMap.getString("btnStart.text")); // NOI18N
         btnStart.setName("btnStart"); // NOI18N
         btnStart.addActionListener(new java.awt.event.ActionListener() {
@@ -83,9 +84,11 @@ public class Ds_s1View extends FrameView {
         pnlHistogram.setName("pnlHistogram"); // NOI18N
         pnlHistogram.setLayout(new java.awt.BorderLayout());
 
+        lblReplikacia.setFont(resourceMap.getFont("lblReplikacia.font")); // NOI18N
         lblReplikacia.setText(resourceMap.getString("lblReplikacia.text")); // NOI18N
         lblReplikacia.setName("lblReplikacia"); // NOI18N
 
+        btnStop.setFont(resourceMap.getFont("btnReset.font")); // NOI18N
         btnStop.setText(resourceMap.getString("btnStop.text")); // NOI18N
         btnStop.setEnabled(false);
         btnStop.setName("btnStop"); // NOI18N
@@ -95,6 +98,7 @@ public class Ds_s1View extends FrameView {
             }
         });
 
+        btnReset.setFont(resourceMap.getFont("btnReset.font")); // NOI18N
         btnReset.setText(resourceMap.getString("btnReset.text")); // NOI18N
         btnReset.setEnabled(false);
         btnReset.setName("btnReset"); // NOI18N
@@ -108,11 +112,12 @@ public class Ds_s1View extends FrameView {
 
         tarNotes.setColumns(20);
         tarNotes.setRows(5);
-        tarNotes.setTabSize(4);
+        tarNotes.setTabSize(6);
         tarNotes.setEnabled(false);
         tarNotes.setName("tarNotes"); // NOI18N
         jScrollPane1.setViewportView(tarNotes);
 
+        chbHistogram.setFont(resourceMap.getFont("lblReplikacia.font")); // NOI18N
         chbHistogram.setSelected(true);
         chbHistogram.setText(resourceMap.getString("chbHistogram.text")); // NOI18N
         chbHistogram.setName("chbHistogram"); // NOI18N
@@ -122,12 +127,13 @@ public class Ds_s1View extends FrameView {
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel1.border.title"))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, resourceMap.getString("jPanel1.border.title"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, resourceMap.getFont("jPanel1.border.titleFont"))); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
 
         txtReplicationCount.setText(resourceMap.getString("txtReplicationCount.text")); // NOI18N
         txtReplicationCount.setName("txtReplicationCount"); // NOI18N
 
+        btnReplicationCountSet.setFont(resourceMap.getFont("btnReset.font")); // NOI18N
         btnReplicationCountSet.setText(resourceMap.getString("btnReplicationCountSet.text")); // NOI18N
         btnReplicationCountSet.setName("btnReplicationCountSet"); // NOI18N
         btnReplicationCountSet.addActionListener(new java.awt.event.ActionListener() {
@@ -140,10 +146,10 @@ public class Ds_s1View extends FrameView {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtReplicationCount, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnReplicationCountSet, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnReplicationCountSet, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                    .addComponent(txtReplicationCount, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -151,9 +157,11 @@ public class Ds_s1View extends FrameView {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(txtReplicationCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnReplicationCountSet))
+                .addComponent(btnReplicationCountSet)
+                .addContainerGap())
         );
 
+        chbNotes.setFont(resourceMap.getFont("lblReplikacia.font")); // NOI18N
         chbNotes.setSelected(true);
         chbNotes.setText(resourceMap.getString("chbNotes.text")); // NOI18N
         chbNotes.setName("chbNotes"); // NOI18N
@@ -163,6 +171,7 @@ public class Ds_s1View extends FrameView {
             }
         });
 
+        jLabel1.setFont(resourceMap.getFont("lblReplikacia.font")); // NOI18N
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
@@ -172,28 +181,31 @@ public class Ds_s1View extends FrameView {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(chbNotes)
-                    .addComponent(btnReset, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
                     .addComponent(chbHistogram)
                     .addComponent(lblReplikacia)
-                    .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-                    .addComponent(btnStop, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+                    .addComponent(btnReset, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                    .addComponent(btnStop, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                    .addComponent(btnStart, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlHistogram, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
+                .addComponent(pnlHistogram, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addContainerGap())
         );
+
+        mainPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnReset, btnStart, btnStop});
+
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlHistogram, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+                    .addComponent(pnlHistogram, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addComponent(btnStart)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -211,26 +223,30 @@ public class Ds_s1View extends FrameView {
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
         menuBar.setName("menuBar"); // NOI18N
 
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
+        fileMenu.setFont(resourceMap.getFont("fileMenu.font")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ds_s1.Ds_s1App.class).getContext().getActionMap(Ds_s1View.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
+        exitMenuItem.setFont(resourceMap.getFont("aboutMenuItem.font")); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
         fileMenu.add(exitMenuItem);
 
         menuBar.add(fileMenu);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
+        helpMenu.setFont(resourceMap.getFont("fileMenu.font")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
         aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        aboutMenuItem.setFont(resourceMap.getFont("aboutMenuItem.font")); // NOI18N
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
         helpMenu.add(aboutMenuItem);
 
